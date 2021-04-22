@@ -1,40 +1,53 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 class Form extends Component {
     constructor(props) {
         super(props);
-        
-        /*
-            TODO - set initial state for link name and URL 
-
-        */
+        this.state = {
+            name: '',
+            URL: '',
+            list: [],
+        }
     }
 
-    handleChange = event => {
-        /*
-            TODO - Logic for changing state based on form changes
-        */
+    handleChange = (input) => {
+        this.setState({ ...this.state, [input.name]: input.value })
     }
 
-    onFormSubmit = (event) => {
-        // to prevent page reload on form submit
-        event.preventDefault();
-        
-        /*
-            TODO - Logic for calling props to handle submission and setting state changes
-        */
-
+    submitForm = (event) => {
+        event.preventDefault()
+        let name = this.state.name
+        let url = this.state.URL
+        let listArray = this.state.list
+        listArray.push({ name: name, URL: url })
+        this.setState({ ...this.state, list: listArray })
+        this.setState({ name: '' })
+        this.setState({ URL: '' })
+        this.props.handleSubmit(this.state.list)
     }
 
     render() {
-
-        return(
-            <form>
-                {/* TODO - Logic for returning a form element with labels and inputs for link name and URL */}
+        return (
+            <form onSubmit={this.submitForm}>
+                <label>Name:</label>
+                <input
+                    type='text'
+                    name='name'
+                    value={this.state.name}
+                    onChange={(e) => this.handleChange(e.target)}
+                />
+                <br />
+                <label>URL:</label>
+                <input
+                    type='text'
+                    name='URL'
+                    value={this.state.URL}
+                    onChange={(e) => this.handleChange(e.target)}
+                />
+                <input type='submit' value='Submit' />
             </form>
         )
-    
     }
 }
 
-export default Form;
+export default Form
